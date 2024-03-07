@@ -4,6 +4,8 @@ ThisBuild / scalaVersion := "3.3.3"
 
 val scalaJsVersion = "3.2.17"
 
+// Common Test code
+
 lazy val testbaseJvm = (project in file("testbase/jvm"))
   .settings(
     libraryDependencies ++= Seq(
@@ -14,7 +16,7 @@ lazy val testbaseJvm = (project in file("testbase/jvm"))
   )
 
 lazy val testbaseJs = (project in file("testbase/js"))
-  .enablePlugins(ScalaJSPlugin)
+  .enablePlugins(ScalaJSPlugin) // Not even necessary to trigger the bug
   .settings(
     libraryDependencies ++= Seq(
       "org.scalatest" %%% "scalatest"          % scalaJsVersion,
@@ -22,6 +24,8 @@ lazy val testbaseJs = (project in file("testbase/js"))
     ),
     Compile / unmanagedSourceDirectories += (file("testbase/src/main/scala").getAbsoluteFile)
   )
+
+// Some user project with test dependency to testbaseJvm
 
 lazy val user = (project in file("user"))
   .dependsOn(testbaseJvm % Test)
